@@ -13,7 +13,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedEventsRouteImport } from './routes/_authenticated/events'
+import { Route as AuthenticatedGiftsRouteImport } from './routes/_authenticated/gifts'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
+import { Route as AuthenticatedLogsRouteImport } from './routes/_authenticated/logs'
+import { Route as AuthenticatedQuizRouteImport } from './routes/_authenticated/quiz'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,9 +40,40 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEventsRoute = AuthenticatedEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGiftsRoute = AuthenticatedGiftsRouteImport.update({
+  id: '/gifts',
+  path: '/gifts',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLeaderboardRoute =
+  AuthenticatedLeaderboardRouteImport.update({
+    id: '/leaderboard',
+    path: '/leaderboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
   id: '/live',
   path: '/live',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLogsRoute = AuthenticatedLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedQuizRoute = AuthenticatedQuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -44,13 +81,25 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/events': typeof AuthenticatedEventsRoute
+  '/gifts': typeof AuthenticatedGiftsRoute
+  '/history': typeof AuthenticatedHistoryRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/logs': typeof AuthenticatedLogsRoute
+  '/quiz': typeof AuthenticatedQuizRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/events': typeof AuthenticatedEventsRoute
+  '/gifts': typeof AuthenticatedGiftsRoute
+  '/history': typeof AuthenticatedHistoryRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/live': typeof AuthenticatedLiveRoute
+  '/logs': typeof AuthenticatedLogsRoute
+  '/quiz': typeof AuthenticatedQuizRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,20 +107,52 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/events': typeof AuthenticatedEventsRoute
+  '/_authenticated/gifts': typeof AuthenticatedGiftsRoute
+  '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/live': typeof AuthenticatedLiveRoute
+  '/_authenticated/logs': typeof AuthenticatedLogsRoute
+  '/_authenticated/quiz': typeof AuthenticatedQuizRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/live'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/events'
+    | '/gifts'
+    | '/history'
+    | '/leaderboard'
+    | '/live'
+    | '/logs'
+    | '/quiz'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/live'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/events'
+    | '/gifts'
+    | '/history'
+    | '/leaderboard'
+    | '/live'
+    | '/logs'
+    | '/quiz'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/events'
+    | '/_authenticated/gifts'
+    | '/_authenticated/history'
+    | '/_authenticated/leaderboard'
     | '/_authenticated/live'
+    | '/_authenticated/logs'
+    | '/_authenticated/quiz'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -110,6 +191,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/events': {
+      id: '/_authenticated/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gifts': {
+      id: '/_authenticated/gifts'
+      path: '/gifts'
+      fullPath: '/gifts'
+      preLoaderRoute: typeof AuthenticatedGiftsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/history': {
+      id: '/_authenticated/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/live': {
       id: '/_authenticated/live'
       path: '/live'
@@ -117,17 +226,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLiveRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/logs': {
+      id: '/_authenticated/logs'
+      path: '/logs'
+      fullPath: '/logs'
+      preLoaderRoute: typeof AuthenticatedLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/quiz': {
+      id: '/_authenticated/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof AuthenticatedQuizRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEventsRoute: typeof AuthenticatedEventsRoute
+  AuthenticatedGiftsRoute: typeof AuthenticatedGiftsRoute
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
   AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
+  AuthenticatedLogsRoute: typeof AuthenticatedLogsRoute
+  AuthenticatedQuizRoute: typeof AuthenticatedQuizRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEventsRoute: AuthenticatedEventsRoute,
+  AuthenticatedGiftsRoute: AuthenticatedGiftsRoute,
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
   AuthenticatedLiveRoute: AuthenticatedLiveRoute,
+  AuthenticatedLogsRoute: AuthenticatedLogsRoute,
+  AuthenticatedQuizRoute: AuthenticatedQuizRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
