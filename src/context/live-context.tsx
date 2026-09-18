@@ -532,9 +532,22 @@ export function LiveProvider({ children }: { children: ReactNode }) {
     [log],
   );
 
+  const normalizeTikTokUsername = (value: string) => {
+    const input = value.trim();
+    if (!input) return "";
+    try {
+      const url = new URL(input.startsWith("http") ? input : `https://www.tiktok.com/@${input.replace(/^@/, "")}/live`);
+      const match = url.pathname.match(/\\/@([^/]+)/);
+      if (match?.[1]) return match[1];
+    } catch {
+      // Treat plain username as-is.
+    }
+    return input.replace(/^@/, "").replace(/\\/$/, "");
+  };
+
   const connect = useCallback(
     async (username: string, mode: "demo" | "bridge", endpoint?: string) => {
-      const clean = username.trim().replace(/^@/, "");
+      const clean = normalizeTikTokUsername(username);
       if (!clean) {
         toast.error("Username TikTok wajib diisi");
         return;
