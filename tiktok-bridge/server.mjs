@@ -128,9 +128,6 @@ function wire(connection, ws, username) {
     send(ws, { type: "disconnected", event: "disconnected" });
   });
 
-  connection.on(WebcastEvent.CONTROL, (data) => {
-    send(ws, { type: "system", event: "control", raw: data });
-  });
 
   connection.on("error", (error) => {
     send(ws, {
