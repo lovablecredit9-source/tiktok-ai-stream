@@ -27,7 +27,9 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
   } = useLive();
   const [username, setUsername] = useState("");
   const [mode, setMode] = useState<"demo" | "bridge">("demo");
-  const [endpoint, setEndpoint] = useState(settings?.provider_endpoint ?? "");
+  const [endpoint, setEndpoint] = useState(
+    settings?.provider_endpoint ?? "ws://localhost:8787/?username={username}",
+  );
   const [busy, setBusy] = useState(false);
 
   async function start() {
@@ -48,10 +50,10 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
       {!session ? (
         <div className="grid gap-3 md:grid-cols-[1fr_180px_auto] md:items-end">
           <div className="space-y-1.5">
-            <Label htmlFor="tiktok-username">Username TikTok</Label>
+            <Label htmlFor="tiktok-username">Username / Link TikTok LIVE</Label>
             <Input
               id="tiktok-username"
-              placeholder="contoh: namaakun"
+              placeholder="username atau link TikTok LIVE"
               value={username}
               maxLength={60}
               onChange={(e) => setUsername(e.target.value)}
@@ -65,7 +67,7 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="demo">DEMO MODE (simulasi)</SelectItem>
-                <SelectItem value="bridge">Bridge pihak ketiga</SelectItem>
+                <SelectItem value="bridge">TikTok Direct Bridge</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -78,13 +80,13 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
               <Label htmlFor="bridge-endpoint">Endpoint WebSocket bridge</Label>
               <Input
                 id="bridge-endpoint"
-                placeholder="wss://bridge-anda.example/live?user={username}"
+                placeholder="ws://localhost:8787/?username={username}"
                 value={endpoint}
                 onChange={(e) => setEndpoint(e.target.value)}
               />
               <p className="text-xs text-warning">
-                TikTok tidak menyediakan API LIVE publik. Endpoint ini milik pihak ketiga dan
-                bukan koneksi resmi TikTok.
+                TikTok Direct Bridge membaca LIVE publik melalui konektor Node.js unofficial.
+                Jalankan folder tiktok-bridge di komputer/server yang dapat diakses aplikasi.
               </p>
             </div>
           ) : (
