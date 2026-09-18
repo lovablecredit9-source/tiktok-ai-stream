@@ -1468,6 +1468,42 @@ This project was built with [Lovable](https://lovable.dev).
 
 **Live app**: https://tiktok-ai-stream.lovable.app
 
+
+## TikTok LIVE Direct Bridge
+
+Repository ini sekarang memiliki `tiktok-bridge/` untuk membaca LIVE publik tanpa login TikTok pada sisi pembaca.
+
+Arsitektur:
+
+```
+TikTok LIVE
+   ↓
+tiktok-live-connector (Node.js)
+   ↓
+WebSocket bridge
+   ↓
+LIVE AI INTERACTION
+   ↓
+Supabase + AI queue + dashboard
+```
+
+Jalankan bridge:
+
+```bash
+cd tiktok-bridge
+npm install
+npm start
+```
+
+Kemudian di halaman **LIVE**:
+- masukkan username atau link LIVE;
+- pilih **TikTok Direct Bridge**;
+- gunakan `ws://localhost:8787/?username={username}` untuk bridge lokal.
+
+Konektor ini unofficial/reverse-engineered, bukan API resmi TikTok. Dokumentasi konektor menyebut username atau URL LIVE dapat digunakan untuk koneksi publik tanpa kredensial, serta event chat, gift, like, follow/share, member, dan viewer tersedia melalui event stream. citeturn0search0turn1search0
+
+Untuk deployment HTTPS, gunakan WebSocket aman (`wss://`) pada server bridge.
+
 ## Build with Lovable
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c91055ba-8e82-4069-893c-9740ff7c1697).
