@@ -1,0 +1,12 @@
+{
+  "name": "tiktok-live-bridge",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "tiktok-live-connector": "^2.5.0",
+    "ws": "^8.18.3"
+  }
+}
