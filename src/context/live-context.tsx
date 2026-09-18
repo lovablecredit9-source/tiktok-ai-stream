@@ -187,6 +187,8 @@ export function LiveProvider({ children }: { children: ReactNode }) {
     void reloadActiveQuestion();
   }, [refreshCatalog, refreshSettings, reloadActiveQuestion]);
 
+  const [pendingResume, setPendingResume] = useState<SessionRow | null>(null);
+
   // restore an already-running session on reload
   useEffect(() => {
     let cancelled = false;
@@ -200,17 +202,15 @@ export function LiveProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
       if (!cancelled && data) {
         setSession(data);
-        setProviderLabel(
-          data.provider === "demo"
-            ? "DEMO MODE (simulasi lokal)"
-            : "Bridge pihak ketiga (tidak resmi)",
-        );
+        sessionRef.current = data;
+        setPendingResume(data);
       }
     })();
     return () => {
       cancelled = true;
     };
   }, []);
+
 
   // ---------------- gift helpers ----------------
   const getGift = useCallback(
@@ -504,6 +504,34 @@ export function LiveProvider({ children }: { children: ReactNode }) {
   );
 
   // ---------------- connection control ----------------
+  const attachAdapter = useCallback(
+    async (clean: string, mode: "demo" | "bridge", endpoint?: string) => {
+      adapterRef.current?.disconnect();
+
+      const callbacks = {
+        onEvent: (event: NormalizedEvent) => {
+          if (pausedRef.current) return;
+          void processorRef.current?.process(event);
+        },
+        onStatus: (next: ConnectionStatus, message?: string) => {
+          setStatus(next);
+          setStatusMessage(message ?? "");
+        },
+        onLog: (level: "INFO" | "WARN" | "ERROR", message: string) => log(level, message, "provider"),
+      };
+
+      const adapter =
+        mode === "demo" || !endpoint?.startsWith("ws")
+          ? createDemoAdapter(callbacks)
+          : createWsAdapter(endpoint, callbacks);
+      adapterRef.current = adapter;
+      setProviderLabel(adapter.name);
+      setProviderOfficial(adapter.official);
+      await adapter.connect(clean);
+    },
+    [log],
+  );
+
   const connect = useCallback(
     async (username: string, mode: "demo" | "bridge", endpoint?: string) => {
       const clean = username.trim().replace(/^@/, "");
@@ -539,34 +567,28 @@ export function LiveProvider({ children }: { children: ReactNode }) {
       setPausedState(false);
       pausedRef.current = false;
 
-      const callbacks = {
-        onEvent: (event: NormalizedEvent) => {
-          if (pausedRef.current) return;
-          void processorRef.current?.process(event);
-        },
-        onStatus: (next: ConnectionStatus, message?: string) => {
-          setStatus(next);
-          setStatusMessage(message ?? "");
-        },
-        onLog: (level: "INFO" | "WARN" | "ERROR", message: string) => log(level, message, "provider"),
-      };
-
-      const adapter =
-        mode === "demo"
-          ? createDemoAdapter(callbacks)
-          : createWsAdapter(endpoint!, callbacks);
-      adapterRef.current = adapter;
-      setProviderLabel(adapter.name);
-      setProviderOfficial(adapter.official);
-      await adapter.connect(clean);
+      await attachAdapter(clean, mode, endpoint);
       toast.success(
         mode === "demo"
           ? "DEMO MODE aktif — semua data disimulasikan"
           : "Menghubungkan ke bridge pihak ketiga (tidak resmi)",
       );
     },
-    [log],
+    [attachAdapter],
   );
+
+  // reattach the provider adapter after a page reload so the feed keeps flowing
+  useEffect(() => {
+    if (!pendingResume) return;
+    setPendingResume(null);
+    void attachAdapter(
+      pendingResume.account_username,
+      pendingResume.provider === "bridge" ? "bridge" : "demo",
+      settingsRef.current?.provider_endpoint ?? undefined,
+    );
+  }, [pendingResume, attachAdapter]);
+
+
 
   const disconnect = useCallback(async () => {
     adapterRef.current?.disconnect();
