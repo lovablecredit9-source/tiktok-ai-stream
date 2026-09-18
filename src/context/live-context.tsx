@@ -577,6 +577,19 @@ export function LiveProvider({ children }: { children: ReactNode }) {
     [attachAdapter],
   );
 
+  // reattach the provider adapter after a page reload so the feed keeps flowing
+  useEffect(() => {
+    if (!pendingResume) return;
+    setPendingResume(null);
+    void attachAdapter(
+      pendingResume.account_username,
+      pendingResume.provider === "bridge" ? "bridge" : "demo",
+      settingsRef.current?.provider_endpoint ?? undefined,
+    );
+  }, [pendingResume, attachAdapter]);
+
+
+
   const disconnect = useCallback(async () => {
     adapterRef.current?.disconnect();
     adapterRef.current = null;
