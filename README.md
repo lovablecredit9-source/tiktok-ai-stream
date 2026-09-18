@@ -1500,7 +1500,7 @@ Kemudian di halaman **LIVE**:
 - pilih **TikTok Direct Bridge**;
 - gunakan `ws://localhost:8787/?username={username}` untuk bridge lokal.
 
-Konektor ini unofficial/reverse-engineered, bukan API resmi TikTok. Dokumentasi konektor menyebut username atau URL LIVE dapat digunakan untuk koneksi publik tanpa kredensial, serta event chat, gift, like, follow/share, member, dan viewer tersedia melalui event stream. citeturn0search0turn1search0
+Konektor ini unofficial/reverse-engineered, bukan API resmi TikTok. Dokumentasi konektor menyebut username atau URL LIVE dapat digunakan untuk koneksi publik tanpa kredensial, serta event chat, gift, like, follow/share, member, dan viewer tersedia melalui event stream.
 
 Untuk deployment HTTPS, gunakan WebSocket aman (`wss://`) pada server bridge.
 
