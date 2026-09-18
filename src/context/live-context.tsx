@@ -88,7 +88,7 @@ function normalizeTikTokUsername(value: string): string {
         ? input
         : `https://www.tiktok.com/@${input.replace(/^@/, "")}/live`,
     );
-    const match = url.pathname.match(/\\/@([^/]+)/);
+    const match = url.pathname.match(/\/@([^/]+)/);
     if (match?.[1]) return match[1];
   } catch {
     // Treat plain username as-is.
