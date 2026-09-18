@@ -98,7 +98,7 @@ async function callLovableAi(
       stream: true,
       store: false,
       reasoning: { effort: "low", summary: "auto" },
-      max_completion_tokens: Math.max(120, settings.max_tokens),
+      max_output_tokens: Math.max(600, settings.max_tokens),
     }),
   });
 
