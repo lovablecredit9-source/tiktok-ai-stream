@@ -50,10 +50,10 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
       {!session ? (
         <div className="grid gap-3 md:grid-cols-[1fr_180px_auto] md:items-end">
           <div className="space-y-1.5">
-            <Label htmlFor="tiktok-username">Username / Link TikTok LIVE</Label>
+            <Label htmlFor="tiktok-username">Link LIVE TikTok</Label>
             <Input
               id="tiktok-username"
-              placeholder="username atau link TikTok LIVE"
+              placeholder="https://www.tiktok.com/@username/live"
               value={username}
               maxLength={60}
               onChange={(e) => setUsername(e.target.value)}
@@ -67,7 +67,7 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="demo">DEMO MODE (simulasi)</SelectItem>
-                <SelectItem value="bridge">TikTok Direct Bridge</SelectItem>
+                <SelectItem value="bridge">Koneksi Live TikTok</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -77,7 +77,7 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
 
           {mode === "bridge" ? (
             <div className="space-y-1.5 md:col-span-3">
-              <Label htmlFor="bridge-endpoint">Endpoint WebSocket bridge</Label>
+              <Label htmlFor="bridge-endpoint">Koneksi server LIVE TikTok</Label>
               <Input
                 id="bridge-endpoint"
                 placeholder="ws://localhost:8787/?username={username}"
@@ -85,7 +85,7 @@ export function LiveControls({ compact = false }: { compact?: boolean }) {
                 onChange={(e) => setEndpoint(e.target.value)}
               />
               <p className="text-xs text-warning">
-                TikTok Direct Bridge membaca LIVE publik melalui konektor Node.js unofficial.
+                Koneksi Live TikTok membaca LIVE publik melalui konektor server.
                 Jalankan folder tiktok-bridge di komputer/server yang dapat diakses aplikasi.
               </p>
             </div>
