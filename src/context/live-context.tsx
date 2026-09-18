@@ -187,6 +187,8 @@ export function LiveProvider({ children }: { children: ReactNode }) {
     void reloadActiveQuestion();
   }, [refreshCatalog, refreshSettings, reloadActiveQuestion]);
 
+  const [pendingResume, setPendingResume] = useState<SessionRow | null>(null);
+
   // restore an already-running session on reload
   useEffect(() => {
     let cancelled = false;
@@ -200,17 +202,15 @@ export function LiveProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
       if (!cancelled && data) {
         setSession(data);
-        setProviderLabel(
-          data.provider === "demo"
-            ? "DEMO MODE (simulasi lokal)"
-            : "Bridge pihak ketiga (tidak resmi)",
-        );
+        sessionRef.current = data;
+        setPendingResume(data);
       }
     })();
     return () => {
       cancelled = true;
     };
   }, []);
+
 
   // ---------------- gift helpers ----------------
   const getGift = useCallback(
